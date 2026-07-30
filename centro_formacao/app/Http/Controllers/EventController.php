@@ -29,18 +29,21 @@ class EventController extends Controller
     }
 
 public function store(Request $request)
-{
-    $request->validate([
-        'email'    => 'required|email|unique:userss,email',
-        'password' => 'required|min:6',
-    ]);
+    {
+        // 1. Executa a validação
+        $validated = $request->validate([
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ]);
 
-    $usr = new Usr();
-    $usr->email = $request->input('email');
-    $usr->password = bcrypt($request->input('password'));
-    $usr->role_id = 1;
-    $usr->save();
+        // 2. Cria e salva o usuário no banco de dados
+        $user = User::create([
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_id'  => 1, // Definindo a role padrão igual ao seu código original
+        ]);
 
-    return redirect('/dashboard');
-}
+        // 3. Redireciona para o dashboard
+        return redirect('/dashboard');
+    }
 }

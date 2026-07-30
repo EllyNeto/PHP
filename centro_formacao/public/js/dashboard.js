@@ -1,9 +1,26 @@
 // ---- Modal (Nova Matrícula) ----
 document.addEventListener('DOMContentLoaded', () => {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const hamburger = document.getElementById('hamburger');
   const overlay = document.getElementById('overlay');
   const openBtn = document.getElementById('openModal');
   const closeBtn = document.getElementById('closeModal');
   const cancelBtn = document.getElementById('cancelModal');
+
+  const closeSidebar = () => {
+    if (sidebar) sidebar.classList.remove('open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('show');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+  };
+
+  if (hamburger) hamburger.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    if (sidebarOverlay) sidebarOverlay.classList.toggle('show', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+  document.querySelectorAll('.nav-item').forEach((item) => item.addEventListener('click', closeSidebar));
 
   if (openBtn) openBtn.addEventListener('click', () => overlay.classList.add('show'));
   if (closeBtn) closeBtn.addEventListener('click', () => overlay.classList.remove('show'));
