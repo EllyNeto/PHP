@@ -15,9 +15,7 @@ class CreateClassesTable extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
-                        $table->string('room', 20);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->string('room', 20);
             $table->foreignId('teacher_id')->constrained('teachers');
             $table->foreignId('curse_id')->constrained('curses')->onDelete('cascade');
             $table->timestamps();

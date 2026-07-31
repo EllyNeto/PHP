@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Usr;
-use App\Models\User;
+use App\Models\Enrollment;
 
 class EventController extends Controller
 {
@@ -19,31 +17,59 @@ class EventController extends Controller
     {
         return view('dashboard');
     }
-       public function profile()
+    public function matriculas()
     {
-        $userss = Usr::all();
+        $matriculas = Enrollment::latest('enrollment_date')->latest()->get()->map(function (Enrollment $enrollment) {
+            return [
+                'nome' => $enrollment->name,
+                'curso' => $enrollment->course,
+                'data' => $enrollment->enrollment_date->format('d M Y'),
+                'estado' => $enrollment->status ? 'Confirmada' : 'Em análise',
+            ];
+        });
 
-        return view('profile', [
-            'userss' => $userss,
-        ]);
+        return view('matriculas', compact('matriculas'));
     }
-
-public function store(Request $request)
+    public function relatorios()
     {
-        // 1. Executa a validação
-        $validated = $request->validate([
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
+        return view('relatorios');
+    }
+        public function definicoes()
+    {
+        return view('definicoes');
+    }
+        public function certificacoes()
+    {
+        return view('certificacoes');
+    }
+    public function cursos_turmas()
+    {
+        return view('cursos_turmas');
+    }
+    public function formandos()
+    {
+        return view('formandos');
+    }
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:30'],
+            'bilhete_identidade' => ['required', 'string', 'max:14'],
+            'course' => ['required', 'string', 'max:100'],
         ]);
 
-        // 2. Cria e salva o usuário no banco de dados
-        $user = User::create([
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role_id'  => 1, // Definindo a role padrão igual ao seu código original
+        Enrollment::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'bilhete_identidade' => $data['bilhete_identidade'],
+            'course' => $data['course'],
+            'status' => true,
+            'enrollment_date' => now()->toDateString(),
         ]);
 
-        // 3. Redireciona para o dashboard
-        return redirect('/dashboard');
+        return redirect('/matriculas')->with('success', 'Matrícula registada com sucesso.');
     }
 }

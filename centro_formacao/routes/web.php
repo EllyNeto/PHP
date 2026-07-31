@@ -16,8 +16,17 @@ use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class, 'index']);
 
-Route::post('/EventController', [EventController::class, 'store']);
+Route::get('/matriculas', [EventController::class, 'matriculas']);
+Route::post('/matriculas', [EventController::class, 'store'])->name('matriculas.store');
+
+Route::get('/relatorios', [EventController::class, 'relatorios']);
+
+Route::get('/definicoes', [EventController::class, 'definicoes']);
+
+Route::get('/certificacoes', [EventController::class, 'certificacoes']);
+
+Route::get('/cursos_turmas', [EventController::class, 'cursos_turmas']);
+
+Route::get('/formandos', [EventController::class, 'formandos']);
 
 Route::get('/dashboard', [EventController::class, 'dashboard']);
-
-Route::get('/profile', [EventController::class, 'profile']);

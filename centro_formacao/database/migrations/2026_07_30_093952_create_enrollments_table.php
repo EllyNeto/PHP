@@ -17,8 +17,12 @@ class CreateEnrollmentsTable extends Migration
             $table->id();
             $table->boolean('status')->default(true);
             $table->date('enrollment_date');
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone', 30);
+            $table->string('bilhete_identidade', 14);
+            $table->string('course', 100);
+            $table->foreignId('class_id')->nullable()->constrained('classes')->nullOnDelete();
             $table->timestamps();
         });
     }
