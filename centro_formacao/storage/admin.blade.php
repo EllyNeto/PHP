@@ -163,7 +163,7 @@
       </div>
       <div class="modal-actions">
         <button class="btn-secondary" id="cancelModal" type="button">Cancelar</button>
-        <button class="btn-primary" style="justify-content:center;" type="submit">Confirmar matrícula</button>
+        <button class="btn-primary" style="justify-content:center;" type="submit">Confirmar inscrição</button>
       </div>
     </form>
   </div>

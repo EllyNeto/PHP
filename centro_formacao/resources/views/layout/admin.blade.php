@@ -103,10 +103,6 @@
         <button class="icon-btn"><span class="dot"></span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </button>
-        <button class="btn-primary" id="openModal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          <span class="btn-text">Nova Matrícula</span>
-        </button>
       </div>
     </div>
 
@@ -123,7 +119,7 @@
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="modal-head">
-      <h3>Nova matrícula</h3>
+      <h3>Nova inscrição</h3>
       <button class="modal-close" id="closeModal" type="button">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
@@ -133,46 +129,51 @@
       <div class="field">
         <label for="formando_nome">Nome do formando</label>
         <input type="text" id="formando_nome" name="name" value="{{ old('name') }}" placeholder="Ex: Beatriz Kanda" required>
-        <div class="field">
-            <label for="formando_email">Email</label>
-            <input type="email" id="formando_email" name="email" value="{{ old('email') }}" placeholder="Ex: beatriz.kanda@example.com" required>
-        </div>
-    </div>
+      </div>
       <div class="field">
-      <label for="formando_bilhete">Bilhete de Identidade</label>
-      <input type="text" id="formando_bilhete" name="bilhete_identidade" value="{{ old('bilhete_identidade') }}" maxlength="14" placeholder="Ex: 1234567890123" required>
-    </div>
-        <div class="field">
+        <label for="formando_email">Email</label>
+        <input type="email" id="formando_email" name="email" value="{{ old('email') }}" placeholder="Ex: beatriz.kanda@example.com" required>
+      </div>
+      <div class="field">
+        <label for="formando_bilhete">Bilhete de Identidade</label>
+        <input type="text" id="formando_bilhete" name="bilhete_identidade" value="{{ old('bilhete_identidade') }}" maxlength="14" placeholder="Ex: 1234567890123" required>
+      </div>
+      <div class="field">
         <label for="formando_telefone">Telefone</label>
         <input type="tel" id="formando_telefone" name="phone" value="{{ old('phone') }}" maxlength="30" placeholder="Ex: 923 456 789" required>
       </div>
       <div class="field">
         <label for="curso_id">Curso</label>
         <select id="curso_id" name="course" required>
-          @forelse($enrollments->classe_id ?? [] as $classe)
-            <option value="{{ $classe->id ?? $classe['id'] ?? '' }}">{{ $classe->nome ?? $classe['nome'] ?? $classe }}</option>
+          <option value="" disabled {{ old('course') ? '' : 'selected' }}>Selecione um curso</option>
+          @forelse($cursos ?? [] as $curso)
+            <option value="{{ $curso->name }}" {{ old('course') == $curso->name ? 'selected' : '' }}>{{ $curso->name }}</option>
           @empty
-            <option>HCIA Data Communications</option>
-            <option>Electricidade de Manutenção Industrial</option>
-            <option>Metrologia Dimensional Aplicada</option>
-            <option>Instalação de Sistemas Fotovoltaicos</option>
-            <option>Mecânica de Manutenção Industrial</option>
+            <option value="" disabled>Nenhum curso disponível no momento</option>
           @endforelse
         </select>
       </div>
-      @if ($errors->any())
+      <div class="field">
+        <label for="payment_status">Estado do pagamento</label>
+        <select id="payment_status" name="payment_status" required>
+          <option value="Pendente" {{ old('payment_status', 'Pendente') === 'Pendente' ? 'selected' : '' }}>Pendente</option>
+          <option value="Confirmado" {{ old('payment_status') === 'Confirmado' ? 'selected' : '' }}>Confirmado</option>
+          <option value="Rejeitado" {{ old('payment_status') === 'Rejeitado' ? 'selected' : '' }}>Rejeitado</option>
+        </select>
+      </div>
+      @if (isset($errors) && $errors->any())
         <div class="field" role="alert">{{ $errors->first() }}</div>
       @endif
       <div class="modal-actions">
         <input class="btn-secondary" id="cancelModal" type="button" value="Cancelar">
-        <input class="btn-primary" style="justify-content:center;" type="submit" value="Confirmar matrícula">
+        <input class="btn-primary" style="justify-content:center;" type="submit" value="Confirmar inscrição">
       </div>
     </form>
   </div>
 </div>
 
 <script src="{{ asset('js/dashboard.js') }}"></script>
-@if ($errors->any())
+@if (isset($errors) && $errors->any())
   <script>
     document.addEventListener('DOMContentLoaded', () => document.getElementById('overlay')?.classList.add('show'));
   </script>

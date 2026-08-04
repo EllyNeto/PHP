@@ -10,11 +10,10 @@ class Enrollment extends Model
 
     protected $fillable = [
         'name', 'email', 'phone', 'bilhete_identidade', 'course',
-        'status', 'enrollment_date', 'class_id',
+        'status', 'payment_status', 'training_center', 'class_name', 'enrollment_date', 'class_id',
     ];
 
     protected $casts = [
-        'status' => 'boolean',
         'enrollment_date' => 'date',
     ];
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt-AO">
 <head>
   <meta charset="UTF-8">
@@ -108,17 +108,17 @@
           </label>
           <span class="forgot">Esqueceste a palavra-passe?</span>
         </div> --}}
-    {{-- <a href="/dashboard" class="btn-primary" style="text-decoration: none;">
+    <a href="/dashboard" class="btn-primary" style="text-decoration: none;">
      Entrar
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
        <path d="M5 12h14M13 6l6 6-6 6"/>
       </svg>
-    </a> --}}
-        <button type="submit" formnovalidate class="btn-primary" value="login">
+    </a>
+        {{-- <button type="submit" formnovalidate class="btn-primary" value="login">
           Entrar
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
-      </form>
+      </form> --}}
 
       <div class="divider"><div class="line"></div><span>ou</span><div class="line"></div></div>
 
