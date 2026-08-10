@@ -1,0 +1,1 @@
+@include('painel.partials.inscricoes')
