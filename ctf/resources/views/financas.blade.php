@@ -1,1 +1,0 @@
-@include('painel.partials.financas')

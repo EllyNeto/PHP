@@ -6,34 +6,9 @@ use Illuminate\Http\Request;
 
 class CentroF_Controller extends Controller
 {
-    public function index()
+    public function dashboard()
     {
-        return view('welcome');
-    }
-
-    public function panel()
-    {
-        return view('index');
-    }
-
-    public function inscricoes()
-    {
-        return view('inscricoes');
-    }
-
-    public function alunos()
-    {
-        return view('alunos');
-    }
-
-    public function docentes()
-    {
-        return view('docentes');
-    }
-
-    public function turmas()
-    {
-        return view('turmas');
+        return view('dashboard');
     }
 
     public function cursos()
@@ -41,9 +16,34 @@ class CentroF_Controller extends Controller
         return view('cursos');
     }
 
-    public function financas()
+    public function turmas()
     {
-        return view('financas');
+        return view('turmas');
+    }
+
+    public function docentes()
+    {
+        return view('docentes');
+    }
+
+    public function inscricoes()
+    {
+        return view('inscricoes');
+    }
+
+    public function formandos()
+    {
+        return view('formandos');
+    }
+
+    public function matriculas()
+    {
+        return view('matriculas');
+    }
+
+    public function certificacoes()
+    {
+        return view('certificacoes');
     }
 
     public function relatorios()
@@ -51,4 +51,13 @@ class CentroF_Controller extends Controller
         return view('relatorios');
     }
 
+    public function definicoes()
+    {
+        return view('definicoes');
+    }
+
+    public function login()
+    {
+        return view('login');
+    }
 }
