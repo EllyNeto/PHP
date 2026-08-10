@@ -40,13 +40,13 @@
     <div class="panel">
       <div class="panel-head">
         <div>
-          <div class="panel-title">Receita vs. Inadimplência</div>
-          <div class="panel-sub">Evolução financeira de propinas</div>
+          <div class="panel-title">Receita de Pagamentos de Cursos</div>
+          <div class="panel-sub">Evolução financeira de cursos liquidados</div>
         </div>
       </div>
       <div class="panel-body" style="display:flex; flex-direction:column; justify-content:space-between; gap: 1rem;">
         <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.5;">
-          Balanço financeiro mensal das receitas liquidadas versus prospecção de propinas pendentes de cobrança.
+          Balanço financeiro das receitas arrecadadas com o pagamento único dos cursos face aos valores pendentes de cobrança.
         </p>
         <button class="btn-primary" style="align-self: flex-start;">Exportar Excel →</button>
       </div>

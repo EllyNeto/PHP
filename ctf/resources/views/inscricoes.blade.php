@@ -3,7 +3,7 @@
 @section('title', 'Inscrições')
 @section('active', 'inscricoes')
 @section('page-title', 'Inscrições & Candidaturas')
-@section('page-subtitle', 'Gestão e validação de candidaturas submetidas para novos cursos')
+@section('page-subtitle', 'Recepção e validação das candidaturas submetidas aos cursos')
 
 @section('content')
   <div class="kpi-row">
@@ -42,7 +42,7 @@
     <div class="panel-head">
       <div>
         <div class="panel-title">Lista de Candidaturas Submetidas</div>
-        <div class="panel-sub">Avaliação de requisitos e documentos de inscrição</div>
+        <div class="panel-sub">Avaliação dos requisitos para prosseguir para o Pagamento nas Finanças</div>
       </div>
       <button class="btn-primary" data-modal-target="modalNovaInscricao">+ Nova Inscrição</button>
     </div>
@@ -54,7 +54,7 @@
             <th>Curso Pretendido</th>
             <th>Data de Inscrição</th>
             <th>Estado</th>
-            <th>Acção</th>
+            <th>Detalhes</th>
           </tr>
         </thead>
         <tbody>
@@ -64,16 +64,14 @@
                 <span class="avatar-mini">DK</span>
                 <div>
                   <div class="cell-main">Domingos Kiala</div>
-                  <div class="cell-sub">BI: 004819231LA042</div>
                 </div>
               </div>
             </td>
             <td>Redes e Infraestruturas de TI</td>
             <td class="mono-num">05/08/2026</td>
-            <td><span class="pill pendente">Pendente</span></td>
+            <td><span class="pill pendente">Pendente Avaliação</span></td>
             <td>
-              <button class="btn-primary" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:var(--green); color:#fff;" onclick="alert('Inscrição aprovada com sucesso!');">Aprovar</button>
-              <button class="btn-secondary" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:var(--red);" onclick="alert('Inscrição rejeitada.');">Rejeitar</button>
+              <a href="{{ url('/financas') }}" class="btn-primary" style="padding:0.3rem 0.65rem; font-size:0.75rem; text-decoration:none;">Detalhes</a>
             </td>
           </tr>
           <tr>
@@ -82,14 +80,15 @@
                 <span class="avatar-mini">AN</span>
                 <div>
                   <div class="cell-main">Ana Paula Neto</div>
-                  <div class="cell-sub">BI: 009218342LA012</div>
                 </div>
               </div>
             </td>
             <td>Sistemas Fotovoltaicos</td>
             <td class="mono-num">04/08/2026</td>
             <td><span class="pill aprovado">Aprovada</span></td>
-            <td><span class="cell-sub">Matriculado</span></td>
+            <td>
+              <a href="{{ url('/financas') }}" class="btn-secondary" style="padding:0.3rem 0.65rem; font-size:0.75rem; text-decoration:none; color: var(--amber);">Detalhes</a>
+            </td>
           </tr>
           <tr>
             <td>
@@ -97,16 +96,14 @@
                 <span class="avatar-mini">FB</span>
                 <div>
                   <div class="cell-main">Fernando Bumba</div>
-                  <div class="cell-sub">BI: 001928341LA099</div>
                 </div>
               </div>
             </td>
             <td>Soldagem e Caldeiraria</td>
             <td class="mono-num">03/08/2026</td>
-            <td><span class="pill pendente">Pendente</span></td>
+            <td><span class="pill pendente">Pendente Avaliação</span></td>
             <td>
-              <button class="btn-primary" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:var(--green); color:#fff;" onclick="alert('Inscrição aprovada com sucesso!');">Aprovar</button>
-              <button class="btn-secondary" style="padding:0.3rem 0.6rem; font-size:0.75rem; color:var(--red);" onclick="alert('Inscrição rejeitada.');">Rejeitar</button>
+              <a href="{{ url('/financas') }}" class="btn-primary" style="padding:0.3rem 0.65rem; font-size:0.75rem; text-decoration:none;">Detalhes</a>
             </td>
           </tr>
         </tbody>
@@ -121,7 +118,7 @@
         <h3>Registar Candidatura</h3>
         <button class="modal-close" type="button">&times;</button>
       </div>
-      <form action="#" method="POST" onsubmit="event.preventDefault(); this.closest('.overlay').classList.remove('show');">
+      <form action="#" method="POST" onsubmit="event.preventDefault(); window.location.href='{{ url('/financas') }}';">
         <div class="field">
           <label>Nome do Candidato</label>
           <input type="text" placeholder="ex.: Domingos Kiala" required>
@@ -145,7 +142,7 @@
         </div>
         <div class="modal-actions">
           <button class="btn-secondary" type="button" data-modal-close>Cancelar</button>
-          <button class="btn-primary" type="submit">Submeter Inscrição</button>
+          <button class="btn-primary" type="submit">Submeter &amp; Avançar p/ Finanças →</button>
         </div>
       </form>
     </div>

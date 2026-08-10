@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class CentroF_Controller extends Controller
 {
-    public function dashboard()
+    public function index()
     {
         return view('dashboard');
     }

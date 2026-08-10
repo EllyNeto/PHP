@@ -42,14 +42,27 @@
       <span class="nav-text">Docentes</span>
     </a>
 
-    <div class="nav-label">Admissões &amp; Formandos</div>
+    <div class="nav-label">Fluxo de Admissão</div>
 
     <a href="{{ url('/inscricoes') }}" class="nav-item {{ $active === 'inscricoes' ? 'active' : '' }}" data-section="inscricoes">
       <span class="nav-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       </span>
       <span class="nav-text">Inscrições</span>
-      <span class="badge-count">5</span>
+    </a>
+
+    <a href="{{ url('/financas') }}" class="nav-item {{ $active === 'financas' ? 'active' : '' }}" data-section="financas">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.5 1.5-2 3-2s3 .8 3 2-1.5 1.8-3 2-3 .7-3 2 1.5 2 3 2 3-.5 3-2"/></svg>
+      </span>
+      <span class="nav-text">Finanças</span>
+    </a>
+
+    <a href="{{ url('/matriculas') }}" class="nav-item {{ $active === 'matriculas' ? 'active' : '' }}" data-section="matriculas">
+      <span class="nav-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+      </span>
+      <span class="nav-text">Matrículas</span>
     </a>
 
     <a href="{{ url('/formandos') }}" class="nav-item {{ $active === 'formandos' || $active === 'alunos' ? 'active' : '' }}" data-section="formandos">
@@ -57,14 +70,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
       </span>
       <span class="nav-text">Formandos</span>
-      <span class="badge-count">812</span>
-    </a>
-
-    <a href="{{ url('/matriculas') }}" class="nav-item {{ $active === 'matriculas' ? 'active' : '' }}" data-section="matriculas">
-      <span class="nav-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.5 1.5-2 3-2s3 .8 3 2-1.5 1.8-3 2-3 .7-3 2 1.5 2 3 2 3-.5 3-2"/></svg>
-      </span>
-      <span class="nav-text">Matrículas &amp; Propinas</span>
     </a>
 
     <div class="nav-label">Académico &amp; Gestão</div>
@@ -76,7 +81,7 @@
       <span class="nav-text">Certificações</span>
     </a>
 
-    <a href="{{ url('/relatorios') }}" class="nav-item {{ $active === 'relatorios' || $active === 'financas' ? 'active' : '' }}" data-section="relatorios">
+    <a href="{{ url('/relatorios') }}" class="nav-item {{ $active === 'relatorios' ? 'active' : '' }}" data-section="relatorios">
       <span class="nav-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>
       </span>
