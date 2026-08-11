@@ -15,6 +15,7 @@ Route::get('/dashboard', [CentroF_Controller::class, 'dashboard']);
 Route::get('/cursos', [CentroF_Controller::class, 'cursos']);
 Route::get('/turmas', [CentroF_Controller::class, 'turmas']);
 Route::get('/docentes', [CentroF_Controller::class, 'docentes']);
+Route::get('/financas', [CentroF_Controller::class,'financas']);
 
 Route::get('/inscricoes', [CentroF_Controller::class, 'inscricoes']);
 Route::get('/formandos', [CentroF_Controller::class, 'formandos']);

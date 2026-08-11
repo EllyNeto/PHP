@@ -11,6 +11,16 @@ class CentroF_Controller extends Controller
         return view('dashboard');
     }
 
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
+
+    public function financas()
+    {
+        return view('financas');
+    }
+
     public function cursos()
     {
         return view('cursos');

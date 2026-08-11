@@ -18,9 +18,9 @@
   --red: #E11D48;            --red-dim: rgba(225, 29, 72, 0.12);
   --green: #16A34A;          --green-dim: rgba(22, 163, 74, 0.12);
 
-  --brand-bg: #0F1B2D;
-  --sidebar-bg: #0F1B2D;
-  --sidebar-text: #F8FAFC;
+  --brand-bg: #FFFFFF;
+  --sidebar-bg: #FFFFFF;
+  --sidebar-text: #0F172A;
 }
 
 html.dark, body.dark {
@@ -174,7 +174,7 @@ h1, h2, h3, h4, .font-display {
 }
 
 .nav-item:hover {
-  background: rgba(255,255,255,0.06);
+  background: var(--panel-2);
   color: var(--sidebar-text);
 }
 
