@@ -53,10 +53,8 @@
             <td class="mono-num">CF-2026-0341</td>
             <td>
               <div class="formador-cell">
-                <span class="avatar-mini">DK</span>
                 <div>
                   <div class="cell-main">Domingos Kiala</div>
-                  <div class="cell-sub">BI: 004819231LA042</div>
                 </div>
               </div>
             </td>
@@ -72,10 +70,8 @@
             <td class="mono-num">CF-2026-0298</td>
             <td>
               <div class="formador-cell">
-                <span class="avatar-mini">AN</span>
                 <div>
                   <div class="cell-main">Ana Paula Neto</div>
-                  <div class="cell-sub">BI: 009218342LA012</div>
                 </div>
               </div>
             </td>
