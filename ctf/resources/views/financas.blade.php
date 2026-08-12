@@ -245,25 +245,25 @@
     </button>
   </div>
 
-  <!-- 2. Grelha de 3 KPIs (Valores do Design) -->
+  <!-- 2. Grelha de 3 KPIs (Valores do Banco de Dados) -->
   <div class="financas-kpi-grid">
     <div class="financas-kpi-card">
       <div class="financas-kpi-label">RECEBIDO ESTE MÊS</div>
-      <div class="financas-kpi-val green" id="kpiRecebido">Kz 4.280.000</div>
+      <div class="financas-kpi-val green" id="kpiRecebido">Kz {{ number_format($kpiRecebido ?? 0, 0, ',', '.') }}</div>
     </div>
 
     <div class="financas-kpi-card">
       <div class="financas-kpi-label">EM ATRASO</div>
-      <div class="financas-kpi-val red" id="kpiAtraso">Kz 615.000</div>
+      <div class="financas-kpi-val red" id="kpiAtraso">Kz {{ number_format($kpiAtraso ?? 0, 0, ',', '.') }}</div>
     </div>
 
     <div class="financas-kpi-card">
       <div class="financas-kpi-label">PROPINAS POR COBRAR</div>
-      <div class="financas-kpi-val dark" id="kpiPropinas">Kz 1.120.000</div>
+      <div class="financas-kpi-val dark" id="kpiPropinas">Kz {{ number_format($kpiPropinas ?? 0, 0, ',', '.') }}</div>
     </div>
   </div>
 
-  <!-- 3. Tabela Principal do Design -->
+  <!-- 3. Tabela Principal de Pagamentos Dinâmica -->
   <div class="panel">
     <div class="table-wrap">
       <table class="financas-table" id="tabelaPagamentos">
@@ -278,49 +278,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-aluno-id="domingos-kiala">
-            <td>
-              <div class="aluno-nome">Domingos<br>Kiala</div>
-            </td>
-            <td class="curso-nome">Redes e<br>Infraestruturas de TI</td>
-            <td class="valor-quant">Kz<br>45.000</td>
-            <td class="metodo-cell">Multicaixa</td>
-            <td class="mono-num data-cell">05/08/2026</td>
-            <td class="estado-cell"><span class="pill pago">Pago</span></td>
-          </tr>
-
-          <tr data-aluno-id="ana-paula-neto">
-            <td>
-              <div class="aluno-nome">Ana Paula<br>Neto</div>
-            </td>
-            <td class="curso-nome">Sistemas<br>Fotovoltaicos</td>
-            <td class="valor-quant">Kz<br>38.000</td>
-            <td class="metodo-cell">Transferência</td>
-            <td class="mono-num data-cell">03/08/2026</td>
-            <td class="estado-cell"><span class="pill pago">Pago</span></td>
-          </tr>
-
-          <tr data-aluno-id="fernando-bumba">
-            <td>
-              <div class="aluno-nome">Fernando<br>Bumba</div>
-            </td>
-            <td class="curso-nome">Soldagem e<br>Caldeiraria</td>
-            <td class="valor-quant">Kz<br>30.000</td>
-            <td class="metodo-cell">Numerário</td>
-            <td class="mono-num data-cell">20/07/2026</td>
-            <td class="estado-cell"><span class="pill em-atraso">Em atraso</span></td>
-          </tr>
-
-          <tr data-aluno-id="marta-cassinda">
-            <td>
-              <div class="aluno-nome">Marta<br>Cassinda</div>
-            </td>
-            <td class="curso-nome">Electricidade<br>Industrial</td>
-            <td class="valor-quant">Kz<br>42.000</td>
-            <td class="metodo-cell">Multicaixa</td>
-            <td class="mono-num data-cell">01/08/2026</td>
-            <td class="estado-cell"><span class="pill pago">Pago</span></td>
-          </tr>
+          @forelse($pagamentos as $pagamento)
+            @php
+              $nameParts = array_filter(explode(' ', trim($pagamento->student_name)));
+              $nameFormatted = implode('<br>', array_slice($nameParts, 0, 2));
+              $courseFormatted = str_replace(' e ', ' e<br>', e($pagamento->course));
+              $dateFormatted = $pagamento->payment_date 
+                ? \Carbon\Carbon::parse($pagamento->payment_date)->format('d/m/Y') 
+                : ($pagamento->created_at ? $pagamento->created_at->format('d/m/Y') : date('d/m/Y'));
+            @endphp
+            <tr data-pagamento-id="{{ $pagamento->id }}">
+              <td>
+                <div class="aluno-nome">{!! $nameFormatted !!}</div>
+              </td>
+              <td class="curso-nome">{!! $courseFormatted !!}</td>
+              <td class="valor-quant">Kz<br>{{ number_format($pagamento->amount, 0, ',', '.') }}</td>
+              <td class="metodo-cell">{{ $pagamento->method }}</td>
+              <td class="mono-num data-cell">{{ $dateFormatted }}</td>
+              <td class="estado-cell">
+                @if(in_array(strtolower($pagamento->status), ['pago', '1', 'confirmado']))
+                  <span class="pill pago">Pago</span>
+                @elseif(in_array(strtolower($pagamento->status), ['em_atraso', 'em-atraso', 'em atraso']))
+                  <span class="pill em-atraso">Em atraso</span>
+                @else
+                  <span class="pill pendente">Pendente</span>
+                @endif
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-dim);">
+                Nenhum registo financeiro encontrado.
+              </td>
+            </tr>
+          @endforelse
         </tbody>
       </table>
     </div>
@@ -334,26 +325,30 @@
         <button class="modal-close" type="button">&times;</button>
       </div>
 
-      <form id="formRegistarPagamento" action="#" method="POST" style="padding: 1rem 1.5rem 1.5rem 1.5rem; gap: 1.1rem;">
+      <form id="formRegistarPagamento" action="{{ route('financas.store') }}" method="POST" style="padding: 1rem 1.5rem 1.5rem 1.5rem; gap: 1.1rem;">
+        @csrf
         <div class="field">
           <label style="font-size: 0.83rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.2rem;">Aluno</label>
-          <select id="pagamentoAluno" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
-            <option value="Fernando Bumba|Soldagem e Caldeiraria|30000">Fernando Bumba</option>
-            <option value="Domingos Kiala|Redes e Infraestruturas de TI|45000">Domingos Kiala</option>
-            <option value="Ana Paula Neto|Sistemas Fotovoltaicos|38000">Ana Paula Neto</option>
-            <option value="Marta Cassinda|Electricidade Industrial|42000">Marta Cassinda</option>
+          <select id="pagamentoAluno" name="student_info" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
+            @if(isset($alunos) && count($alunos) > 0)
+              @foreach($alunos as $aluno)
+                <option value="{{ $aluno->id }}|{{ $aluno->name }}|{{ $aluno->course }}">{{ $aluno->name }} — {{ $aluno->course }}</option>
+              @endforeach
+            @else
+              <option value="" disabled selected>Nenhum aluno encontrado nas inscrições</option>
+            @endif
           </select>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
           <div class="field">
             <label style="font-size: 0.83rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.2rem;">Valor (Kz)</label>
-            <input type="number" id="pagamentoValor" placeholder="35000" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
+            <input type="number" id="pagamentoValor" name="amount" placeholder="35000" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
           </div>
 
           <div class="field">
             <label style="font-size: 0.83rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.2rem;">Método</label>
-            <select id="pagamentoMetodo" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
+            <select id="pagamentoMetodo" name="method" required style="padding: 0.65rem 0.85rem; border-radius: 10px; background: var(--bg); color: var(--text); border: 1px solid var(--border); font-size: 0.9rem;">
               <option value="Transferência">Transferência</option>
               <option value="Multicaixa">Multicaixa</option>
               <option value="Numerário">Numerário</option>
@@ -378,8 +373,6 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('formRegistarPagamento');
-
   function showToast(message) {
     const toast = document.getElementById('toastFinancas');
     const toastMsg = document.getElementById('toastFinancasMsg');
@@ -392,69 +385,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function formatMoney(num) {
-    return 'Kz ' + num.toLocaleString('pt-AO');
-  }
+  @if(session('success'))
+    showToast("{{ session('success') }}");
+  @endif
 
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const alunoVal = document.getElementById('pagamentoAluno').value;
-      const valorInput = document.getElementById('pagamentoValor').value;
-      const metodoVal = document.getElementById('pagamentoMetodo').value;
-
-      const [nomeAluno, cursoAluno] = alunoVal.split('|');
-      const today = new Date();
-      const dateStr = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
-      const valNum = parseInt(valorInput) || 35000;
-      const valFormatted = 'Kz<br>' + valNum.toLocaleString('pt-AO');
-
-      // Verificar se o aluno já existe na tabela para atualizar o seu estado para 'Pago'
-      const rows = document.querySelectorAll('#tabelaPagamentos tbody tr');
-      let found = false;
-
-      rows.forEach(row => {
-        const nameCell = row.querySelector('.aluno-nome');
-        if (nameCell && nameCell.textContent.replace(/\s+/g, ' ').trim().toLowerCase().includes(nomeAluno.toLowerCase())) {
-          row.querySelector('.metodo-cell').textContent = metodoVal;
-          row.querySelector('.data-cell').textContent = dateStr;
-          row.querySelector('.valor-quant').innerHTML = valFormatted;
-          row.querySelector('.estado-cell').innerHTML = '<span class="pill pago">Pago</span>';
-          found = true;
-        }
-      });
-
-      // Se não for um dos alunos existentes, insere nova linha na tabela
-      if (!found) {
-        const tbody = document.querySelector('#tabelaPagamentos tbody');
-        if (tbody) {
-          const tr = document.createElement('tr');
-          const nomeQuebrado = nomeAluno.split(' ').slice(0, 2).join('<br>');
-          const cursoQuebrado = cursoAluno ? cursoAluno.replace(/ e /g, ' e<br>') : 'Curso Geral';
-
-          tr.innerHTML = `
-            <td><div class="aluno-nome">${nomeQuebrado}</div></td>
-            <td class="curso-nome">${cursoQuebrado}</td>
-            <td class="valor-quant">${valFormatted}</td>
-            <td class="metodo-cell">${metodoVal}</td>
-            <td class="mono-num data-cell">${dateStr}</td>
-            <td class="estado-cell"><span class="pill pago">Pago</span></td>
-          `;
-          tbody.prepend(tr);
-        }
-      }
-
-      // Fechar modal
-      const modalOverlay = document.getElementById('modalRegistarPagamento');
-      if (modalOverlay) modalOverlay.classList.remove('show');
-
-      // Limpar formulário e notificar
-      form.reset();
-      showToast(`Pagamento de ${nomeAluno} (${formatMoney(valNum)}) confirmado com sucesso!`);
-    });
-  }
+  @if(session('error'))
+    showToast("{{ session('error') }}");
+  @endif
 });
 </script>
 @endpush
-

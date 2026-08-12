@@ -101,7 +101,7 @@
     <div class="panel-head">
       <div>
         <div class="panel-title">Últimas Inscrições Registadas</div>
-        <div class="panel-sub">Candidaturas submetidas no portal</div>
+        <div class="panel-sub">Inscrições submetidas no portal</div>
       </div>
       <a href="{{ url('/matriculas') }}" class="panel-tag" style="text-decoration:none;">Ver todas →</a>
     </div>

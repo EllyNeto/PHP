@@ -44,7 +44,7 @@
         <div class="panel-title">Lista Geral de Formandos</div>
         <div class="panel-sub">Formandos com matrícula activa nas turmas</div>
       </div>
-      <button class="btn-primary" data-modal-target="modalNovoFormando">+ Novo Formando</button>
+      <!-- <button class="btn-primary" data-modal-target="modalNovoFormando">+ Novo Formando</button> -->
     </div>
     <div class="table-wrap">
       <table>
@@ -141,7 +141,7 @@
   </div>
 
   <!-- Modal Adicionar Formando -->
-  <div class="overlay" id="modalNovoFormando">
+  <!-- <div class="overlay" id="modalNovoFormando">
     <div class="modal">
       <div class="modal-head">
         <h3>Registar Novo Formando</h3>
@@ -179,6 +179,6 @@
           <button class="btn-primary" type="submit">Guardar Formando</button>
         </div>
       </form>
-    </div>
+    </div> -->
   </div>
 @endsection
