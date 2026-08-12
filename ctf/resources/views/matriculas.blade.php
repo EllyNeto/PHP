@@ -60,7 +60,6 @@
             </td>
             <td>
               <div class="cell-main">Redes e Infraestruturas de TI</div>
-              <div class="cell-sub mono-num">Turma: T-TIC204-A</div>
             </td>
             <td><span class="pill pago">Pago (TRX-948123)</span></td>
             <td><span class="pill aprovado">Matriculado</span></td>
@@ -77,7 +76,6 @@
             </td>
             <td>
               <div class="cell-main">Sistemas Fotovoltaicos</div>
-              <div class="cell-sub mono-num">Turma: T-ENR055-A</div>
             </td>
             <td><span class="pill pago">Pago (TRX-812034)</span></td>
             <td><span class="pill aprovado">Matriculado</span></td>
