@@ -12,6 +12,30 @@
     <span id="toastMessage">Operação realizada com sucesso!</span>
   </div>
 
+  @if(session('success'))
+    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-left: 4px solid #10b981; color: #10b981; padding: 0.85rem 1.1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+      {{ session('success') }}
+    </div>
+  @endif
+
+  @if(session('error'))
+    <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; border-left: 4px solid #ef4444; color: #ef4444; padding: 0.85rem 1.1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+      <strong style="display: block; margin-bottom: 0.2rem; font-weight: 700;">⚠️ Erro de Validação:</strong>
+      {{ session('error') }}
+    </div>
+  @endif
+
+  @if(isset($errors) && $errors->any())
+    <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; border-left: 4px solid #ef4444; color: #ef4444; padding: 0.85rem 1.1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.88rem;">
+      <strong style="display: block; margin-bottom: 0.4rem; font-weight: 700;">⚠️ Atenção: Foram encontrados erros no formulário que deves retificar:</strong>
+      <ul style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem;">
+        @foreach($errors->all() as $err)
+          <li>{{ $err }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
   <div class="kpi-row">
     <div class="kpi-card" style="--kpi-accent:var(--amber); --kpi-accent-dim:var(--amber-dim);">
       <div class="kpi-top">
@@ -94,29 +118,20 @@
                 @endif
               </td>
               <td>
-                <div style="display: flex; gap: 0.4rem; align-items: center;">
-                  <button class="btn-primary btn-detalhes" 
-                          style="padding:0.35rem 0.75rem; font-size:0.78rem;" 
-                          data-modal-target="modalDetalhesInscricao"
-                          data-db-id="{{ $inscricao->id }}"
-                          data-id="{{ $candId }}"
-                          data-nome="{{ $inscricao->name }}"
-                          data-email="{{ $inscricao->email }}"
-                          data-bi="{{ $inscricao->bi }}"
-                          data-contacto="{{ $inscricao->phone }}"
-                          data-curso="{{ $inscricao->course }}"
-                          data-data="{{ $inscricao->created_at ? $inscricao->created_at->format('d/m/Y') : '' }}"
-                          data-pagamento-info="{{ $inscricao->pagamento_info ?? '⏳ Pendente nas Finanças — Aguardando Pagamento' }}">
-                    Detalhes
-                  </button>
-                  <button class="btn-secondary btn-eliminar" 
-                          style="padding:0.35rem 0.65rem; font-size:0.78rem; color: #ef4444; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.06);" 
-                          data-modal-target="modalEliminarInscricao"
-                          data-db-id="{{ $inscricao->id }}"
-                          data-nome="{{ $inscricao->name }}">
-                    Eliminar
-                  </button>
-                </div>
+                <button class="btn-primary btn-detalhes" 
+                        style="padding:0.35rem 0.75rem; font-size:0.78rem;" 
+                        data-modal-target="modalDetalhesInscricao"
+                        data-db-id="{{ $inscricao->id }}"
+                        data-id="{{ $candId }}"
+                        data-nome="{{ $inscricao->name }}"
+                        data-email="{{ $inscricao->email }}"
+                        data-bi="{{ $inscricao->bi }}"
+                        data-contacto="{{ $inscricao->phone }}"
+                        data-curso="{{ $inscricao->course }}"
+                        data-data="{{ $inscricao->created_at ? $inscricao->created_at->format('d/m/Y') : '' }}"
+                        data-pagamento-info="{{ $inscricao->pagamento_info ?? '⏳ Pendente nas Finanças — Aguardando Pagamento' }}">
+                  Detalhes
+                </button>
               </td>
             </tr>
           @empty
@@ -156,6 +171,11 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
           <div class="field" style="grid-column: span 2;">
+            <label>ID da Inscrição (Inalterável)</label>
+            <input type="text" id="detalhesCandId" readonly disabled style="opacity: 0.7; background: var(--panel-2); font-weight: bold; color: var(--amber);">
+          </div>
+
+          <div class="field" style="grid-column: span 2;">
             <label>Nome Completo do Aluno</label>
             <input type="text" id="detalhesNome" name="name" required>
           </div>
@@ -183,11 +203,11 @@
           <div class="field" style="grid-column: span 2;">
             <label>Curso Pretendido</label>
             <select id="detalhesCurso" name="course" required>
-              <option value="Redes e Infraestruturas de TI">Redes e Infraestruturas de TI</option>
-              <option value="Electricidade Industrial">Electricidade Industrial</option>
-              <option value="Soldagem e Caldeiraria">Soldagem e Caldeiraria</option>
-              <option value="Sistemas Fotovoltaicos">Sistemas Fotovoltaicos</option>
-              <option value="Automação Industrial">Automação Industrial</option>
+              @forelse($cursos ?? [] as $c)
+                <option value="{{ $c->name }}">{{ $c->name }}</option>
+              @empty
+                <option value="" disabled selected>Nenhum curso cadastrado</option>
+              @endforelse
             </select>
           </div>
 
@@ -231,11 +251,11 @@
         <div class="field">
           <label>Curso Pretendido</label>
           <select id="novoCurso" name="course" required>
-            <option value="Redes e Infraestruturas de TI">Redes e Infraestruturas de TI</option>
-            <option value="Electricidade Industrial">Electricidade Industrial</option>
-            <option value="Soldagem e Caldeiraria">Soldagem e Caldeiraria</option>
-            <option value="Sistemas Fotovoltaicos">Sistemas Fotovoltaicos</option>
-            <option value="Automação Industrial">Automação Industrial</option>
+            @forelse($cursos ?? [] as $c)
+              <option value="{{ $c->name }}">{{ $c->name }}</option>
+            @empty
+              <option value="" disabled selected>Nenhum curso cadastrado</option>
+            @endforelse
           </select>
         </div>
         <div class="field">
@@ -268,7 +288,7 @@
         @csrf
         @method('DELETE')
         <div style="padding: 1rem 0; color: var(--text); font-size: 0.88rem; line-height: 1.5;">
-          Tem certeza de que deseja eliminar permanentemente a inscrição de <strong id="eliminarNomeCandidato" style="color: var(--text-heading);"></strong>? Esta acção não poderá ser desfeita.
+          Tem certeza de que deseja eliminar permanentemente a inscrição de <strong id="eliminarNomeCandidato" style="color: var(--text-heading);"></strong>? Esta acção aplicará o Soft Delete na inscrição.
         </div>
         <div class="modal-actions" style="margin-top: 0.5rem;">
           <button class="btn-secondary" type="button" data-modal-close>Cancelar</button>
@@ -329,6 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('detalhesModalTitle').textContent = `Detalhes de ${nome}`;
       document.getElementById('detalhesModalSub').textContent = `Inscrição #${id}`;
 
+      document.getElementById('detalhesCandId').value = id || '';
       document.getElementById('detalhesNome').value = nome || '';
       document.getElementById('detalhesEmail').value = email || '';
       document.getElementById('detalhesContacto').value = contacto || '';
@@ -336,25 +357,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('detalhesData').value = dataInsc || '';
       document.getElementById('detalhesCurso').value = curso || '';
       document.getElementById('detalhesPagamentoInfo').value = pagamentoInfo || '⏳ Pendente nas Finanças — Aguardando Pagamento';
-    });
-  });
-
-  // Setup do modal de eliminação pela tabela
-  document.querySelectorAll('.btn-eliminar').forEach(btn => {
-    btn.addEventListener('click', function () {
-      const dbId = this.getAttribute('data-db-id');
-      const nome = this.getAttribute('data-nome');
-      activeDbId = dbId;
-      activeNome = nome;
-
-      const formEliminar = document.getElementById('formEliminarInscricao');
-      if (formEliminar) {
-        formEliminar.action = '/inscricoes/' + dbId;
-      }
-      const nomeEl = document.getElementById('eliminarNomeCandidato');
-      if (nomeEl) {
-        nomeEl.textContent = nome;
-      }
     });
   });
 

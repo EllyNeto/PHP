@@ -36,6 +36,17 @@ class AddSoftDeletesToAllTables extends Migration
                 }
             });
         }
+
+        $tables = ['courses', 'teachers', 'classes', 'students'];
+        foreach ($tables as $t) {
+            if (Schema::hasTable($t)) {
+                Schema::table($t, function (Blueprint $table) use ($t) {
+                    if (!Schema::hasColumn($t, 'deleted_at')) {
+                        $table->softDeletes();
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -67,6 +78,17 @@ class AddSoftDeletesToAllTables extends Migration
                     $table->dropSoftDeletes();
                 }
             });
+        }
+
+        $tables = ['courses', 'teachers', 'classes', 'students'];
+        foreach ($tables as $t) {
+            if (Schema::hasTable($t)) {
+                Schema::table($t, function (Blueprint $table) use ($t) {
+                    if (Schema::hasColumn($t, 'deleted_at')) {
+                        $table->dropSoftDeletes();
+                    }
+                });
+            }
         }
     }
 }

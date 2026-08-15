@@ -7,6 +7,7 @@ export default function painel() {
     darkMode: localStorage.getItem('theme') === 'dark',
     modalCurso: false,
     modalTurma: false,
+    modalFormador: false,
     modalDocente: false,
     modalInscricao: false,
     modalPagamento: false,
@@ -33,7 +34,7 @@ export default function painel() {
       { id: 'dashboard',   label: 'Dashboard',   subtitle: 'Visão geral do centro',            icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>' },
       { id: 'cursos',      label: 'Cursos',       subtitle: 'Catálogo de cursos ministrados',   icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>' },
       { id: 'turmas',      label: 'Turmas',       subtitle: 'Organização de turmas e horários', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>' },
-      { id: 'docentes',    label: 'Docentes',     subtitle: 'Corpo de formadores',              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
+      { id: 'formadores',  label: 'Formadores',   subtitle: 'Corpo de formadores',              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
       { id: 'inscricoes',  label: 'Inscrições',   subtitle: 'Candidaturas a novos cursos',       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>' },
       { id: 'alunos',      label: 'Alunos',       subtitle: 'Formandos matriculados',            icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>' },
       { id: 'financas',    label: 'Finanças',     subtitle: 'Propinas e pagamentos',             icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.5 1.5-2 3-2s3 .8 3 2-1.5 1.8-3 2-3 .7-3 2 1.5 2 3 2 3-.5 3-2"/></svg>' },
@@ -69,13 +70,13 @@ export default function painel() {
     ],
 
     turmas: [
-      { id: 'T-TIC204-A', curso: 'Redes e Infraestruturas de TI', docente: 'João Baptista', horario: 'Seg/Qua/Sex · 08h–12h', ocupadas: 24, capacidade: 25, estado: 'Em curso' },
-      { id: 'T-ELM118-B', curso: 'Electricidade Industrial',       docente: 'Manuel Sacaia', horario: 'Ter/Qui · 14h–18h',    ocupadas: 18, capacidade: 20, estado: 'Em curso' },
-      { id: 'T-MPR072-A', curso: 'Soldagem e Caldeiraria',         docente: 'Isabel Chindenga', horario: 'Seg–Sex · 07h–11h', ocupadas: 15, capacidade: 18, estado: 'A iniciar' },
-      { id: 'T-ENR055-A', curso: 'Sistemas Fotovoltaicos',         docente: 'Carlos Muatxinene', horario: 'Sáb · 08h–17h',    ocupadas: 20, capacidade: 22, estado: 'Em curso' },
+      { id: 'T-TIC204-A', curso: 'Redes e Infraestruturas de TI', formador: 'João Baptista', horario: 'Seg/Qua/Sex · 08h–12h', ocupadas: 24, capacidade: 25, estado: 'Em curso' },
+      { id: 'T-ELM118-B', curso: 'Electricidade Industrial',       formador: 'Manuel Sacaia', horario: 'Ter/Qui · 14h–18h',    ocupadas: 18, capacidade: 20, estado: 'Em curso' },
+      { id: 'T-MPR072-A', curso: 'Soldagem e Caldeiraria',         formador: 'Isabel Chindenga', horario: 'Seg–Sex · 07h–11h', ocupadas: 15, capacidade: 18, estado: 'A iniciar' },
+      { id: 'T-ENR055-A', curso: 'Sistemas Fotovoltaicos',         formador: 'Carlos Muatxinene', horario: 'Sáb · 08h–17h',    ocupadas: 20, capacidade: 22, estado: 'Em curso' },
     ],
 
-    docentes: [
+    formadores: [
       { id: 1, nome: 'João Baptista',     especialidade: 'Redes e Telecomunicações', contacto: '+244 923 000 111', turmas: 2, iniciais: 'JB' },
       { id: 2, nome: 'Manuel Sacaia',     especialidade: 'Instalações Eléctricas',   contacto: '+244 912 222 333', turmas: 1, iniciais: 'MS' },
       { id: 3, nome: 'Isabel Chindenga',  especialidade: 'Soldagem Industrial',       contacto: '+244 934 444 555', turmas: 1, iniciais: 'IC' },

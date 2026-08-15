@@ -35,11 +35,11 @@
       <span class="nav-text">Turmas</span>
     </a>
 
-    <a href="{{ url('/docentes') }}" class="nav-item {{ $active === 'docentes' ? 'active' : '' }}" data-section="docentes">
+    <a href="{{ url('/formadores') }}" class="nav-item {{ $active === 'formadores' || $active === 'docentes' ? 'active' : '' }}" data-section="formadores">
       <span class="nav-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </span>
-      <span class="nav-text">Docentes</span>
+      <span class="nav-text">Formadores</span>
     </a>
 
     <div class="nav-label">Fluxo de Admissão</div>
