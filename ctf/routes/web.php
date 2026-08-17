@@ -39,8 +39,13 @@ Route::put('/inscricoes/{id}', [CentroF_Controller::class, 'updateInscription'])
 Route::post('/inscricoes/{id}', [CentroF_Controller::class, 'updateInscription']);
 Route::delete('/inscricoes/{id}', [CentroF_Controller::class, 'destroyInscription'])->name('inscricoes.destroy');
 Route::post('/inscricoes/{id}/delete', [CentroF_Controller::class, 'destroyInscription']);
-Route::get('/formandos', [CentroF_Controller::class, 'formandos']);
+Route::get('/formandos', [CentroF_Controller::class, 'formandos'])->name('formandos.index');
 Route::get('/alunos', [CentroF_Controller::class, 'formandos']);
+Route::post('/formandos', [CentroF_Controller::class, 'storeMatricula'])->name('formandos.store');
+Route::put('/formandos/{id}', [CentroF_Controller::class, 'updateMatricula'])->name('formandos.update');
+Route::post('/formandos/{id}', [CentroF_Controller::class, 'updateMatricula']);
+Route::delete('/formandos/{id}', [CentroF_Controller::class, 'destroyMatricula'])->name('formandos.destroy');
+Route::post('/formandos/{id}/delete', [CentroF_Controller::class, 'destroyMatricula']);
 Route::get('/matriculas', [CentroF_Controller::class, 'matriculas'])->name('matriculas.index');
 Route::post('/matriculas', [CentroF_Controller::class, 'storeMatricula'])->name('matriculas.store');
 Route::put('/matriculas/{id}', [CentroF_Controller::class, 'updateMatricula'])->name('matriculas.update');

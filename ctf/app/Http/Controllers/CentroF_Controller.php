@@ -487,7 +487,37 @@ class CentroF_Controller extends Controller
     }
     public function formandos()
     {
-        return view('formandos');
+        if (\Illuminate\Support\Facades\Schema::hasTable('students')) {
+            $formandos = StudentModel::with(['inscription', 'classe'])->orderBy('id', 'desc')->get();
+        } else {
+            $formandos = collect([]);
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('inscriptions')) {
+            $candidatosPagos = Inscription_model::orderBy('name', 'asc')->get();
+        } else {
+            $candidatosPagos = collect([]);
+        }
+
+        if (\Illuminate\Support\Facades\Schema::hasTable('classes')) {
+            $turmas = ClasseModel::orderBy('code', 'asc')->get();
+        } else {
+            $turmas = collect([]);
+        }
+
+        $totalMatriculados = $formandos->count();
+
+        $propinasEmDia = $formandos->filter(function ($f) {
+            $status = strtolower($f->inscription->status ?? '');
+            $info = strtolower($f->inscription->pagamento_info ?? '');
+            return in_array($status, ['aprovado', 'aprovada', 'pago', 'em dia']) || 
+                   strpos($info, 'pago') !== false || 
+                   strpos($info, 'confirmado') !== false;
+        })->count();
+
+        $propinasPendentes = max(0, $totalMatriculados - $propinasEmDia);
+
+        return view('formandos', compact('formandos', 'candidatosPagos', 'turmas', 'totalMatriculados', 'propinasEmDia', 'propinasPendentes'));
     }
 
     public function matriculas()
