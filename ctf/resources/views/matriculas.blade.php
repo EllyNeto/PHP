@@ -56,7 +56,7 @@
     <div class="panel-head">
       <div>
         <div class="panel-title">Matrículas e Atribuição de Turmas</div>
-        <div class="panel-sub">Candidatos que completaram o Pagamento nas Finanças (Dados Carregados da Base de Dados)</div>
+        <div class="panel-sub">Candidatos que completaram o Pagamento nas Finanças.</div>
       </div>
       <button class="btn-primary" data-modal-target="modalNovaMatricula">+ Formalizar Matrícula</button>
     </div>

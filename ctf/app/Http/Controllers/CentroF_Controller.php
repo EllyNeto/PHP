@@ -16,13 +16,94 @@ class CentroF_Controller extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        return $this->dashboard();
     }
 
     public function dashboard()
     {
-        return view('dashboard');
+        // 1. Formandos Activos
+        $formandosActivos = \Illuminate\Support\Facades\Schema::hasTable('students') ? StudentModel::count() : 0;
+        if ($formandosActivos == 0 && \Illuminate\Support\Facades\Schema::hasTable('inscriptions')) {
+            $formandosActivos = Inscription_model::whereIn('status', ['aprovado', 'aprovada', 'Aprovada (Pago)'])->count();
+        }
+
+        // 2. Turmas em Curso
+        $turmasEmCurso = \Illuminate\Support\Facades\Schema::hasTable('classes') ? ClasseModel::count() : 0;
+
+        // 3. Taxa de Ocupação
+        $taxaOcupacao = 0;
+        if (\Illuminate\Support\Facades\Schema::hasTable('classes')) {
+            $totalCapacidade = ClasseModel::sum('capacity');
+            $totalInscritos = ClasseModel::sum('enrolled');
+            if ($totalCapacidade > 0) {
+                $taxaOcupacao = round(($totalInscritos / $totalCapacidade) * 100);
+            }
+        }
+
+        // 4. Inadimplência / Pendentes
+        $taxaInadimplencia = 0;
+        if (\Illuminate\Support\Facades\Schema::hasTable('finance')) {
+            $totalFinance = Finance_model::count();
+            $pendentesFinance = Finance_model::whereIn('status', ['pendente', 'Pendente', 'em_atraso', 'em-atraso', 'Em atraso'])->count();
+            if ($totalFinance > 0) {
+                $taxaInadimplencia = round(($pendentesFinance / $totalFinance) * 100, 1);
+            }
+        }
+
+        // 5. Aproveitamento Académico / Aprovados
+        $totalInscricoes = \Illuminate\Support\Facades\Schema::hasTable('inscriptions') ? Inscription_model::count() : 0;
+        $aprovadosCount = 0;
+        $taxaAprovados = 0;
+        if ($totalInscricoes > 0) {
+            $aprovadosCount = Inscription_model::whereIn('status', ['aprovado', 'aprovada', 'Aprovada (Pago)'])->count();
+            $taxaAprovados = round(($aprovadosCount / $totalInscricoes) * 100);
+        }
+
+        // 6. Inscrições por Área / Curso (Gráfico)
+        $chartLabels = [];
+        $chartData = [];
+        if (\Illuminate\Support\Facades\Schema::hasTable('inscriptions')) {
+            $groupPorCurso = Inscription_model::select('course', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->whereNotNull('course')
+                ->where('course', '!=', '')
+                ->groupBy('course')
+                ->pluck('total', 'course')
+                ->toArray();
+
+            if (empty($groupPorCurso) && \Illuminate\Support\Facades\Schema::hasTable('courses')) {
+                $cursos = CourseModel::all();
+                foreach ($cursos as $c) {
+                    $chartLabels[] = $c->name;
+                    $chartData[] = 0;
+                }
+            } else {
+                foreach ($groupPorCurso as $cursoNome => $qtd) {
+                    $chartLabels[] = $cursoNome;
+                    $chartData[] = $qtd;
+                }
+            }
+        }
+
+        // 7. Últimas Inscrições
+        $ultimasInscricoes = \Illuminate\Support\Facades\Schema::hasTable('inscriptions')
+            ? Inscription_model::orderBy('id', 'desc')->take(5)->get()
+            : collect();
+
+        return view('dashboard', compact(
+            'formandosActivos',
+            'turmasEmCurso',
+            'taxaOcupacao',
+            'taxaInadimplencia',
+            'totalInscricoes',
+            'aprovadosCount',
+            'taxaAprovados',
+            'chartLabels',
+            'chartData',
+            'ultimasInscricoes'
+        ));
     }
+
+
 
     protected function getValidationMessages()
     {
@@ -371,7 +452,51 @@ class CentroF_Controller extends Controller
 
     public function formadores()
     {
-        return view('formadores');
+        if (\Illuminate\Support\Facades\Schema::hasTable('teachers')) {
+            $formadores = TeacherModel::withCount('classes')->orderBy('id', 'desc')->get();
+        } else {
+            $formadores = collect();
+        }
+
+        return view('formadores', compact('formadores'));
+    }
+
+    public function storeFormador(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'bi' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:50',
+        ]);
+
+        TeacherModel::create($validated);
+
+        return redirect()->route('formadores.index')->with('success', 'Formador cadastrado com sucesso!');
+    }
+
+    public function updateFormador(Request $request, $id)
+    {
+        $formador = TeacherModel::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'bi' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:50',
+        ]);
+
+        $formador->update($validated);
+
+        return redirect()->route('formadores.index')->with('success', 'Formador actualizado com sucesso!');
+    }
+
+    public function destroyFormador($id)
+    {
+        $formador = TeacherModel::findOrFail($id);
+        $formador->delete();
+
+        return redirect()->route('formadores.index')->with('success', 'Formador eliminado com sucesso!');
     }
 
     public function docentes()

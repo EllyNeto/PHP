@@ -66,9 +66,9 @@
     <div class="panel-head">
       <div>
         <div class="panel-title">Lista Geral de Formandos</div>
-        <div class="panel-sub">Formandos com matrícula activa nas turmas (Tabela Students)</div>
+        <div class="panel-sub">Formandos com matrícula activa nas turmas</div>
       </div>
-      <button class="btn-primary" data-modal-target="modalNovoFormando">+ Novo Formando</button>
+      <!-- Button removed per user request -->
     </div>
     <div class="table-wrap">
       <table>
@@ -151,7 +151,7 @@
           @empty
             <tr>
               <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-dim);">
-                Nenhum formando registado na base de dados.
+                Nenhum formando registado.
               </td>
             </tr>
           @endforelse

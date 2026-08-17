@@ -10,4 +10,11 @@ class CourseModel extends Model
     use SoftDeletes;
 
     protected $table = 'courses';
+
+    protected $fillable = [
+        'name',
+        'type',
+        'description',
+        'duration',
+    ];
 }
